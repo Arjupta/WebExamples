@@ -1,5 +1,5 @@
-# new-repo
-This repo was used as for the purpose of learning basic concepts of Git/Github.
+# Backend
+Thir repo is going to be used for learning backend development 
 
-Git learning tutorial
-I am editing the README file. Adding some more details about the project description.
+##Learning 
+- Building Rest Api in Node.js 
