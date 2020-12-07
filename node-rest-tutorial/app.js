@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 mongoose.connect('mongodb+srv://arjupta:rLyjQJBmOl1RMI2e@node-rest.tuzw8.mongodb.net/node-rest?retryWrites=true&w=majority');
 mongoose.Promise = global.Promise;
 app.use(morgan('dev'));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
