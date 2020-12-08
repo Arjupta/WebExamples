@@ -8,6 +8,8 @@ const pass = 'rLyjQJBmOl1RMI2e';
 const orderRoutes = require('./api/routes/orders');
 const bodyParser = require('body-parser');
 
+const userRoutes = require('./api/routes/users');
+
 mongoose.connect('mongodb+srv://arjupta:rLyjQJBmOl1RMI2e@node-rest.tuzw8.mongodb.net/node-rest?retryWrites=true&w=majority');
 mongoose.Promise = global.Promise;
 app.use(morgan('dev'));
@@ -31,6 +33,7 @@ app.use((req,res,next)=>{
 // Routes to direct
 app.use('/products',productRoutes);
 app.use('/orders',orderRoutes);
+app.use('/users',userRoutes);
 
 app.use((req,res,next)=>{
     const error = new Error('Not Found');
