@@ -4,13 +4,13 @@ const morgan = require('morgan');
 const productRoutes = require('./api/routes/products');
 const mongoose = require('mongoose');
 
-const pass = 'rLyjQJBmOl1RMI2e';
 const orderRoutes = require('./api/routes/orders');
 const bodyParser = require('body-parser');
 
 const userRoutes = require('./api/routes/users');
-
-mongoose.connect('mongodb+srv://arjupta:rLyjQJBmOl1RMI2e@node-rest.tuzw8.mongodb.net/node-rest?retryWrites=true&w=majority');
+require('dotenv').config();
+const pass = process.env.Mongo_Atlas_Pw
+mongoose.connect(`mongodb+srv://arjupta:${pass}@node-rest.tuzw8.mongodb.net/node-rest?retryWrites=true&w=majority`);
 mongoose.Promise = global.Promise;
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));

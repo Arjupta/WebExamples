@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const { model } = require('../models/user');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 router.post('/signup',(req,res,next)=>{
     User.find({email:req.body.email}).exec().then(result=>{
@@ -41,6 +43,48 @@ router.post('/signup',(req,res,next)=>{
         }
     })
 });
+
+router.post('/login',(req,res,next)=>{
+    User.find({email :req.body.email}).exec()
+    .then(result =>{
+        if(result.length<1){
+            return res.status(404).json({
+                message:'Auth Failed'
+            });
+        }
+        bcrypt.compare(req.body.password, result[0].password,(err,pass)=>{
+            if(err){
+                return res.status(401).json({
+                    message:'Auth Failed'
+                });
+            }
+            if(pass){
+                const token = jwt.sign({
+                        email: result[0].email,
+                        userId: result[0]._id  
+                    },
+                    process.env.Jwt_Key,
+                    {
+                        expiresIn: "1h"
+                    });
+
+                return res.status(201).json({
+                    message:'Auth success',
+                    token: token
+                });
+            }
+            res.status(401).json({
+                message:'Auth Failed'
+            });
+        })
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json({
+            error:err
+        });
+    });
+}); 
 
 router.delete('/:userId',(req,res,next)=>{
     User.remove({_id:req.params.userId}).exec()
