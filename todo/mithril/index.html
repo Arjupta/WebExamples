@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MyApp</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+    <script src="https://unpkg.com/mithril/mithril.js"></script>
+    <script>
+        var root = document.body;
+        var App = {
+            todos:[],
+            todoText:"",
+            addTodo: function (event) {
+                App.todos = [...App.todos,App.todoText];
+                localStorage.setItem("todos",JSON.stringify(App.todos));
+            },
+            oninit: function (vnode) {
+                const existingTodos = localStorage.getItem("todos");
+                App.todos = existingTodos? JSON.parse(existingTodos):[];
+            },
+            view: function (vnode) {
+                return [
+                    m(
+                        'ul',
+                        App.todos.map((todo=> m('li',todo)))
+                    ),
+                    m(
+                        'form',
+                        {
+                            onsubmit: function (event) {
+                                event.preventDefault();
+                                App.addTodo(event);
+                            }
+                        },
+                        [
+                            m('input', {type:'text', value:App.todoText, onchange: (e)=>(App.todoText = e.target.value)}),
+                            m('input', {type:'submit', value:'Add Todo'})
+                        ]
+                    )
+                ];
+            }
+        };
+        m.mount(root, App);
+    </script>
+    </body>
+</html>
